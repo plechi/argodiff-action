@@ -1,0 +1,18 @@
+name: 'ArgoDiff'
+description: 'Compares the currently deployed argocd manifests with the manifests in the git repository'
+inputs:
+  argocd-server: # id of input
+    description: 'URL of the argocd server'
+    required: true
+  argocd-token: # id of input
+    description: 'Token to authenticate with the argocd server'
+    required: true
+  repo-slug: # id of input
+    description: 'Slug of the repository in the format owner/repo'
+    required: false
+  changelist: # id of input
+    description: 'Changelist to compare with the currently deployed manifests'
+    required: false
+runs:
+  using: 'node20'
+  main: 'index.js'

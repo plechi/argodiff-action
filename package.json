@@ -1,0 +1,21 @@
+{
+  "name": "argodiff",
+  "version": "1.0.0",
+  "description": "Diffs argo project with the current repo.",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@homecentr/yaml-diff": "^1.1.7",
+    "axios": "^1.7.7",
+    "diff": "^7.0.0",
+    "json-diff": "^1.0.6",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.2"
+  },
+    "scripts": {
+        "build": "ncc build index.js --license licenses.txt -o dist"
+    }
+}
