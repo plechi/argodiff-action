@@ -9,7 +9,6 @@
     "@homecentr/yaml-diff": "^1.1.7",
     "axios": "^1.7.7",
     "diff": "^7.0.0",
-    "json-diff": "^1.0.6",
     "yaml": "^2.6.0"
   },
   "devDependencies": {

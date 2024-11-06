@@ -17,6 +17,12 @@ const axiosInstance = axios.create({
   }
 });
 
+
+function log(message) {
+  core.info(message)
+}
+
+
 /**
  * Check if it's a github repository
  * @param repo
@@ -166,7 +172,7 @@ async function printAppDiff(appName, appNamespace, targetRevision, currentRevisi
 
   Object.entries(diffs).forEach((e) => {
     const [resource, diff] = e
-    console.log(`\n${appNamespace}/${appName} - ${resource}`.bold);
+    log(`\n${appNamespace}/${appName} - ${resource}`.bold);
 
     const lineStats = diff.lineStats;
 
@@ -182,21 +188,21 @@ async function printAppDiff(appName, appNamespace, targetRevision, currentRevisi
     }
 
     if (lineStats.changed === 0) {
-      console.log("No changes".grey);
+      log("No changes".grey);
       return;
     }
 
-    process.stdout.write(`Lines: Total ${diff.lineStats.total}`)
-    process.stdout.write(", ")
-    process.stdout.write(`Changed ${diff.lineStats.changed}`.blue)
-    process.stdout.write(", ")
-    process.stdout.write(`Added ${diff.lineStats.added}`.green)
-    process.stdout.write(", ")
-    process.stdout.write(`Removed ${diff.lineStats.added}`.red)
-    process.stdout.write("\n")
+    log(`Lines: Total ${diff.lineStats.total}`)
+    log(", ")
+    log(`Changed ${diff.lineStats.changed}`.blue)
+    log(", ")
+    log(`Added ${diff.lineStats.added}`.green)
+    log(", ")
+    log(`Removed ${diff.lineStats.added}`.red)
+    log("\n")
 
     const line = part.added ? part.value.green : (part.removed ? part.value.red : part.value);
-    process.stdout.write(line + "\n")
+    log(line + "\n")
 
   });
   return fileStats
@@ -204,6 +210,10 @@ async function printAppDiff(appName, appNamespace, targetRevision, currentRevisi
 
 async function main() {
   const apps = await getAffectedApps(changelist);
+
+  apps.foreach((app) => {
+    log(`Application: ${app.metadata.namespace}/${app.metadata.name}`)
+  })
 
   const fileStats = {
     unchanged: 0,
@@ -223,9 +233,9 @@ async function main() {
     fileStats.removed += stat.removed;
   });
 
-  console.log("Resource summary: "+ `unchanged ${fileStats.unchanged}, ` + `modified ${fileStats.modified}`.blue + `, ` + `new ${fileStats.added}`.green + `, ` + `deleted: ${fileStats.removed}`.red)
+  log("Resource summary: " + `unchanged ${fileStats.unchanged}, ` + `modified ${fileStats.modified}`.blue + `, ` + `new ${fileStats.added}`.green + `, ` + `deleted: ${fileStats.removed}`.red)
 }
 
-main().then().catch((err)=>{
+main().then().catch((err) => {
   core.setFailed(err.message)
 });
